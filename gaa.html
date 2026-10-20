@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Galway Bay U17's Live Scorekeeper & Match Reporter</title>
+    <title>GAA Live Scorekeeper & Match Reporter</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -250,7 +250,7 @@
                 <input
                   type="text"
                   id="web-home-name"
-                  value="Claremorris"
+                  value="Home Team"
                   oninput="syncTeamNames('home', this.value)"
                   class="w-full bg-slate-800/80 border border-slate-600 focus:border-pitch-400 rounded-lg text-center font-bold text-lg text-white py-1.5 px-2 outline-none transition"
                 />
@@ -306,7 +306,7 @@
                 <input
                   type="text"
                   id="web-away-name"
-                  value="Galway Bay"
+                  value="Away Team"
                   oninput="syncTeamNames('away', this.value)"
                   class="w-full bg-slate-800/80 border border-slate-600 focus:border-pitch-400 rounded-lg text-center font-bold text-lg text-white py-1.5 px-2 outline-none transition"
                 />
@@ -351,7 +351,7 @@
                 class="font-bold text-pitch-400 flex items-center gap-2"
               >
                 <i data-lucide="shield" class="w-5 h-5"></i>
-                <span>Claremorris Controls</span>
+                <span>Home Team Controls</span>
               </h2>
               <span
                 class="text-xs bg-pitch-500/10 text-pitch-400 border border-pitch-500/20 px-2 py-0.5 rounded-full font-medium"
@@ -416,7 +416,7 @@
                 class="font-bold text-pitch-400 flex items-center gap-2"
               >
                 <i data-lucide="shield" class="w-5 h-5"></i>
-                <span>Galway Bay Controls</span>
+                <span>Away Team Controls</span>
               </h2>
               <span
                 class="text-xs bg-slate-700 text-slate-300 border border-slate-600 px-2 py-0.5 rounded-full font-medium"
@@ -791,7 +791,7 @@
                       id="mobile-home-name"
                       class="font-bold text-sm text-white truncate"
                     >
-                      Claremorris
+                      Home Team
                     </div>
                     <div
                       id="mobile-home-score"
@@ -815,7 +815,7 @@
                       id="mobile-away-name"
                       class="font-bold text-sm text-white truncate"
                     >
-                      Galway Bay
+                      Away Team
                     </div>
                     <div
                       id="mobile-away-score"
@@ -948,8 +948,8 @@
     <script>
       // Initializing default match state
       let matchState = {
-        homeName: "Claremorris",
-        awayName: "Galway Bay",
+        homeName: "Home Team",
+        awayName: "Away Team",
         homeScore: 0,
         awayScore: 0,
         homeGoals: 0,
