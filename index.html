@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Match Hub - Select Sport</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="max-w-md w-full bg-slate-800/90 border border-slate-700 rounded-3xl p-8 shadow-2xl text-center space-y-6">
+        
+        <!-- Header Icon & Title -->
+        <div class="space-y-2">
+            <div class="inline-flex bg-pitch-600 text-white p-3 rounded-2xl shadow-lg mb-2" style="background-color: #22834f;">
+                <i data-lucide="trophy" class="w-8 h-8"></i>
+            </div>
+            <h1 class="text-2xl font-extrabold text-white">Club Match Hub</h1>
+            <p class="text-xs text-slate-400">Select a sport to launch the live scorekeeper app</p>
+        </div>
+
+        <!-- Sport Selection Buttons -->
+        <div class="space-y-3 pt-2">
+            <!-- GAA Link -->
+            <a href="gaa.html" class="flex items-center justify-between p-4 bg-slate-900 hover:bg-slate-700 border border-slate-700 hover:border-emerald-500 rounded-2xl transition group">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-emerald-500/10 text-emerald-400 rounded-xl group-hover:scale-110 transition">
+                        <i data-lucide="shield" class="w-6 h-6"></i>
+                    </div>
+                    <div class="text-left">
+                        <div class="font-bold text-white text-sm">GAA Score Tracker</div>
+                        <div class="text-xs text-slate-400">Goals, 2 Pointers & Points</div>
+                    </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-5 h-5 text-slate-500 group-hover:text-white transition"></i>
+            </a>
+
+            <!-- Rugby Link -->
+            <a href="rugby.html" class="flex items-center justify-between p-4 bg-slate-900 hover:bg-slate-700 border border-slate-700 hover:border-emerald-500 rounded-2xl transition group">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-emerald-500/10 text-emerald-400 rounded-xl group-hover:scale-110 transition">
+                        <i data-lucide="shield" class="w-6 h-6"></i>
+                    </div>
+                    <div class="text-left">
+                        <div class="font-bold text-white text-sm">Rugby Union Tracker</div>
+                        <div class="text-xs text-slate-400">Tries, Conversions & Penalties</div>
+                    </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-5 h-5 text-slate-500 group-hover:text-white transition"></i>
+            </a>
+        </div>
+
+        <!-- Footer / Support Small Print -->
+        <div class="pt-4 border-t border-slate-700/80 text-[11px] text-slate-500">
+            Pitchside Mobile PWA Ready • Local Archive Supported
+        </div>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
