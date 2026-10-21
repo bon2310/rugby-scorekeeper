@@ -37,45 +37,15 @@
         }
     </script>
     <style>
-        /* Smooth transitions for collapsible/expanding log */
-        .log-transition {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        /* Hide scrollbars for slick mobile look */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        /* Mobile Device Frame styling */
-        .device-frame {
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
-            border: 12px solid #1e293b;
-            border-radius: 40px;
-        }
-
-        /* Print styles for formatted printouts */
+        .log-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .device-frame { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); border: 12px solid #1e293b; border-radius: 40px; }
         @media print {
-            body {
-                background: white !important;
-                color: black !important;
-            }
-            header, .no-print, #view-mobile, .btn-action {
-                display: none !important;
-            }
-            .print-only {
-                display: block !important;
-            }
-            .bg-slate-900, .bg-slate-800, .bg-pitch-900 {
-                background: white !important;
-                color: black !important;
-                border: 1px solid #ccc !important;
-            }
-            .text-white, .text-pitch-400, .text-slate-300 {
-                color: black !important;
-            }
+            body { background: white !important; color: black !important; }
+            header, .no-print, #view-mobile, .btn-action { display: none !important; }
+            .bg-slate-900, .bg-slate-800, .bg-pitch-900 { background: white !important; color: black !important; border: 1px solid #ccc !important; }
+            .text-white, .text-pitch-400, .text-slate-300 { color: black !important; }
         }
     </style>
 </head>
@@ -114,17 +84,10 @@
         </div>
     </header>
 
-    <!-- MAIN CONTAINER -->
     <main class="max-w-6xl mx-auto px-4 pt-6">
-
-        <!-- ========================================== -->
-        <!-- VIEW 1: WEB DASHBOARD / SCOREKEEPER        -->
-        <!-- ========================================== -->
         <div id="view-web" class="space-y-6">
-
-            <!-- Match Control Bar (Timer + Global Actions) -->
+            <!-- Match Control Bar -->
             <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl p-4 shadow-xl flex flex-wrap items-center justify-between gap-4">
-                <!-- Match Clock & Date Selector -->
                 <div class="flex flex-wrap items-center gap-4">
                     <div class="flex items-center gap-3 bg-slate-900/80 px-4 py-2.5 rounded-xl border border-slate-700/50">
                         <div class="text-pitch-400 flex items-center gap-2">
@@ -133,16 +96,15 @@
                         </div>
                         <div id="web-timer-display" class="font-mono text-2xl font-bold text-white tracking-widest">15:00</div>
                         <div class="flex items-center gap-1.5 ml-1">
-                            <button id="timer-toggle-btn" onclick="toggleTimer()" class="p-2 bg-pitch-600 hover:bg-pitch-500 text-white rounded-lg transition active:scale-95" title="Start/Pause Clock">
+                            <button id="timer-toggle-btn" onclick="toggleTimer()" class="p-2 bg-pitch-600 hover:bg-pitch-500 text-white rounded-lg transition active:scale-95">
                                 <i id="timer-icon" data-lucide="play" class="w-4 h-4"></i>
                             </button>
-                            <button onclick="resetTimer()" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg transition active:scale-95" title="Reset Clock">
+                            <button onclick="resetTimer()" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg transition active:scale-95">
                                 <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Match Date Setting -->
                     <div class="flex items-center gap-2 bg-slate-900/80 px-3 py-2 rounded-xl border border-slate-700/50 text-xs text-slate-300">
                         <i data-lucide="calendar" class="w-4 h-4 text-pitch-400"></i>
                         <span class="font-medium text-slate-400">Date:</span>
@@ -150,7 +112,6 @@
                     </div>
                 </div>
 
-                <!-- Match Actions (Undo & Reset Score) -->
                 <div class="flex items-center gap-3">
                     <button onclick="undoLastScore()" class="flex items-center gap-2 px-4 py-2.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-xl font-medium text-sm transition active:scale-95">
                         <i data-lucide="undo-2" class="w-4 h-4"></i>
@@ -163,30 +124,24 @@
                 </div>
             </div>
 
-            <!-- Main Scoreboard Banner -->
+            <!-- Scoreboard Banner -->
             <div class="bg-gradient-to-br from-pitch-900 via-pitch-800 to-slate-900 border border-pitch-700/50 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
                 <div class="absolute -right-12 -bottom-12 opacity-10 pointer-events-none text-white">
                     <i data-lucide="shield" class="w-80 h-80"></i>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-5 items-center gap-6 relative z-10">
-                    <!-- Home Score Card -->
-                    <div class="md:col-span-2 bg-slate-900/60 backdrop-blur border border-slate-700/50 rounded-2xl p-5 text-center transition hover:border-pitch-500/40">
+                    <div class="md:col-span-2 bg-slate-900/60 backdrop-blur border border-slate-700/50 rounded-2xl p-5 text-center">
                         <div class="mb-2">
-                            <label class="block text-[10px] text-slate-400 font-semibold uppercase tracking-wider mb-1">Home Team (Offense)</label>
-                            <input type="text" id="web-home-name" value="Kansas City" oninput="syncTeamNames('home', this.value)" class="w-full bg-slate-800/80 border border-slate-600 focus:border-pitch-400 rounded-lg text-center font-bold text-lg text-white py-1.5 px-2 outline-none transition">
+                            <label class="block text-[10px] text-slate-400 font-semibold uppercase tracking-wider mb-1">Home Team</label>
+                            <input type="text" id="web-home-name" value="Kansas City" oninput="syncTeamNames('home', this.value)" class="w-full bg-slate-800/80 border border-slate-600 focus:border-pitch-400 rounded-lg text-center font-bold text-lg text-white py-1.5 px-2 outline-none">
                         </div>
                         <div id="web-home-score" class="font-mono text-6xl md:text-7xl font-extrabold text-pitch-400 tracking-tight my-2">0</div>
                         <div class="text-xs text-slate-400 flex flex-wrap justify-center gap-2 font-medium">
-                            <span id="web-home-td">TDs: 0</span>
-                            <span>•</span>
-                            <span id="web-home-fg">FGs: 0</span>
-                            <span>•</span>
-                            <span id="web-home-safety">Safeties: 0</span>
+                            <span id="web-home-td">TDs: 0</span> • <span id="web-home-fg">FGs: 0</span> • <span id="web-home-safety">Safeties: 0</span>
                         </div>
                     </div>
 
-                    <!-- Match Center Divider / VS -->
                     <div class="md:col-span-1 text-center py-2">
                         <div class="inline-flex flex-col items-center justify-center">
                             <span class="text-xs font-semibold text-pitch-400 tracking-widest uppercase bg-pitch-950/80 border border-pitch-700/60 px-3 py-1 rounded-full">VS</span>
@@ -194,442 +149,219 @@
                         </div>
                     </div>
 
-                    <!-- Away Score Card -->
-                    <div class="md:col-span-2 bg-slate-900/60 backdrop-blur border border-slate-700/50 rounded-2xl p-5 text-center transition hover:border-pitch-500/40">
+                    <div class="md:col-span-2 bg-slate-900/60 backdrop-blur border border-slate-700/50 rounded-2xl p-5 text-center">
                         <div class="mb-2">
-                            <label class="block text-[10px] text-slate-400 font-semibold uppercase tracking-wider mb-1">Away Team (Defense)</label>
-                            <input type="text" id="web-away-name" value="San Francisco" oninput="syncTeamNames('away', this.value)" class="w-full bg-slate-800/80 border border-slate-600 focus:border-pitch-400 rounded-lg text-center font-bold text-lg text-white py-1.5 px-2 outline-none transition">
+                            <label class="block text-[10px] text-slate-400 font-semibold uppercase tracking-wider mb-1">Away Team</label>
+                            <input type="text" id="web-away-name" value="San Francisco" oninput="syncTeamNames('away', this.value)" class="w-full bg-slate-800/80 border border-slate-600 focus:border-pitch-400 rounded-lg text-center font-bold text-lg text-white py-1.5 px-2 outline-none">
                         </div>
                         <div id="web-away-score" class="font-mono text-6xl md:text-7xl font-extrabold text-pitch-400 tracking-tight my-2">0</div>
                         <div class="text-xs text-slate-400 flex flex-wrap justify-center gap-2 font-medium">
-                            <span id="web-away-td">TDs: 0</span>
-                            <span>•</span>
-                            <span id="web-away-fg">FGs: 0</span>
-                            <span>•</span>
-                            <span id="web-away-safety">Safeties: 0</span>
+                            <span id="web-away-td">TDs: 0</span> • <span id="web-away-fg">FGs: 0</span> • <span id="web-away-safety">Safeties: 0</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Interactive Scoring Controls Grid (5 Options) -->
+            <!-- Controls Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                
-                <!-- Home Scoring Buttons -->
+                <!-- Home Controls -->
                 <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 shadow-lg">
                     <div class="flex items-center justify-between border-b border-slate-700/80 pb-3 mb-4">
                         <h2 id="home-panel-title" class="font-bold text-pitch-400 flex items-center gap-2">
-                            <i data-lucide="shield" class="w-5 h-5"></i>
-                            <span>Kansas City Controls</span>
+                            <i data-lucide="shield" class="w-5 h-5"></i><span>Kansas City Controls</span>
                         </h2>
                         <span class="text-xs bg-pitch-500/10 text-pitch-400 border border-pitch-500/20 px-2 py-0.5 rounded-full font-medium">Home</span>
                     </div>
-
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         <button onclick="addScore('home', 6, 'Touchdown')" class="flex flex-col items-center justify-center p-3.5 bg-pitch-700 hover:bg-pitch-600 text-white rounded-xl shadow transition active:scale-95 group">
-                            <span class="font-bold text-sm flex items-center gap-1.5">
-                                <i data-lucide="award" class="w-4 h-4 text-gold-500 group-hover:scale-110 transition"></i> Touchdown
-                            </span>
+                            <span class="font-bold text-sm flex items-center gap-1.5"><i data-lucide="award" class="w-4 h-4 text-gold-500"></i> Touchdown</span>
                             <span class="text-xs text-pitch-200 mt-0.5">+6 Points</span>
                         </button>
-
                         <button onclick="addScore('home', 1, 'Extra Point')" class="flex flex-col items-center justify-center p-3.5 bg-slate-700 hover:bg-slate-650 text-white rounded-xl shadow transition active:scale-95 border border-slate-600 group">
-                            <span class="font-bold text-sm flex items-center gap-1.5">
-                                <i data-lucide="target" class="w-4 h-4 text-amber-400 group-hover:scale-110 transition"></i> Extra Point
-                            </span>
+                            <span class="font-bold text-sm flex items-center gap-1.5"><i data-lucide="target" class="w-4 h-4 text-amber-400"></i> Extra Point</span>
                             <span class="text-xs text-slate-300 mt-0.5">+1 Point</span>
                         </button>
-
                         <button onclick="addScore('home', 2, '2-Pt Conversion')" class="flex flex-col items-center justify-center p-3.5 bg-slate-700 hover:bg-slate-650 text-white rounded-xl shadow transition active:scale-95 border border-slate-600 group">
-                            <span class="font-bold text-sm flex items-center gap-1.5">
-                                <i data-lucide="footprints" class="w-4 h-4 text-emerald-400 group-hover:scale-110 transition"></i> 2-Pt Conv.
-                            </span>
+                            <span class="font-bold text-sm flex items-center gap-1.5"><i data-lucide="footprints" class="w-4 h-4 text-emerald-400"></i> 2-Pt Conv.</span>
                             <span class="text-xs text-slate-300 mt-0.5">+2 Points</span>
                         </button>
-
                         <button onclick="addScore('home', 3, 'Field Goal')" class="flex flex-col items-center justify-center p-3.5 bg-slate-700 hover:bg-slate-650 text-white rounded-xl shadow transition active:scale-95 border border-slate-600 group">
-                            <span class="font-bold text-sm flex items-center gap-1.5">
-                                <i data-lucide="zap" class="w-4 h-4 text-sky-400 group-hover:scale-110 transition"></i> Field Goal
-                            </span>
+                            <span class="font-bold text-sm flex items-center gap-1.5"><i data-lucide="zap" class="w-4 h-4 text-sky-400"></i> Field Goal</span>
                             <span class="text-xs text-slate-300 mt-0.5">+3 Points</span>
                         </button>
-
                         <button onclick="addScore('home', 2, 'Safety')" class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center p-3.5 bg-rose-950/60 hover:bg-rose-900/60 text-white rounded-xl shadow transition active:scale-95 border border-rose-800/60 group">
-                            <span class="font-bold text-sm flex items-center gap-1.5">
-                                <i data-lucide="shield-alert" class="w-4 h-4 text-rose-400 group-hover:scale-110 transition"></i> Safety
-                            </span>
+                            <span class="font-bold text-sm flex items-center gap-1.5"><i data-lucide="shield-alert" class="w-4 h-4 text-rose-400"></i> Safety</span>
                             <span class="text-xs text-rose-200 mt-0.5">+2 Points</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Away Scoring Buttons -->
+                <!-- Away Controls -->
                 <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 shadow-lg">
                     <div class="flex items-center justify-between border-b border-slate-700/80 pb-3 mb-4">
                         <h2 id="away-panel-title" class="font-bold text-pitch-400 flex items-center gap-2">
-                            <i data-lucide="shield" class="w-5 h-5"></i>
-                            <span>San Francisco Controls</span>
+                            <i data-lucide="shield" class="w-5 h-5"></i><span>San Francisco Controls</span>
                         </h2>
                         <span class="text-xs bg-slate-700 text-slate-300 border border-slate-600 px-2 py-0.5 rounded-full font-medium">Away</span>
                     </div>
-
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         <button onclick="addScore('away', 6, 'Touchdown')" class="flex flex-col items-center justify-center p-3.5 bg-pitch-700 hover:bg-pitch-600 text-white rounded-xl shadow transition active:scale-95 group">
-                            <span class="font-bold text-sm flex items-center gap-1.5">
-                                <i data-lucide="award" class="w-4 h-4 text-gold-500 group-hover:scale-110 transition"></i> Touchdown
-                            </span>
+                            <span class="font-bold text-sm flex items-center gap-1.5"><i data-lucide="award" class="w-4 h-4 text-gold-500"></i> Touchdown</span>
                             <span class="text-xs text-pitch-200 mt-0.5">+6 Points</span>
                         </button>
-
                         <button onclick="addScore('away', 1, 'Extra Point')" class="flex flex-col items-center justify-center p-3.5 bg-slate-700 hover:bg-slate-650 text-white rounded-xl shadow transition active:scale-95 border border-slate-600 group">
-                            <span class="font-bold text-sm flex items-center gap-1.5">
-                                <i data-lucide="target" class="w-4 h-4 text-amber-400 group-hover:scale-110 transition"></i> Extra Point
-                            </span>
+                            <span class="font-bold text-sm flex items-center gap-1.5"><i data-lucide="target" class="w-4 h-4 text-amber-400"></i> Extra Point</span>
                             <span class="text-xs text-slate-300 mt-0.5">+1 Point</span>
                         </button>
-
                         <button onclick="addScore('away', 2, '2-Pt Conversion')" class="flex flex-col items-center justify-center p-3.5 bg-slate-700 hover:bg-slate-650 text-white rounded-xl shadow transition active:scale-95 border border-slate-600 group">
-                            <span class="font-bold text-sm flex items-center gap-1.5">
-                                <i data-lucide="footprints" class="w-4 h-4 text-emerald-400 group-hover:scale-110 transition"></i> 2-Pt Conv.
-                            </span>
+                            <span class="font-bold text-sm flex items-center gap-1.5"><i data-lucide="footprints" class="w-4 h-4 text-emerald-400"></i> 2-Pt Conv.</span>
                             <span class="text-xs text-slate-300 mt-0.5">+2 Points</span>
                         </button>
-
                         <button onclick="addScore('away', 3, 'Field Goal')" class="flex flex-col items-center justify-center p-3.5 bg-slate-700 hover:bg-slate-650 text-white rounded-xl shadow transition active:scale-95 border border-slate-600 group">
-                            <span class="font-bold text-sm flex items-center gap-1.5">
-                                <i data-lucide="zap" class="w-4 h-4 text-sky-400 group-hover:scale-110 transition"></i> Field Goal
-                            </span>
+                            <span class="font-bold text-sm flex items-center gap-1.5"><i data-lucide="zap" class="w-4 h-4 text-sky-400"></i> Field Goal</span>
                             <span class="text-xs text-slate-300 mt-0.5">+3 Points</span>
                         </button>
-
                         <button onclick="addScore('away', 2, 'Safety')" class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center p-3.5 bg-rose-950/60 hover:bg-rose-900/60 text-white rounded-xl shadow transition active:scale-95 border border-rose-800/60 group">
-                            <span class="font-bold text-sm flex items-center gap-1.5">
-                                <i data-lucide="shield-alert" class="w-4 h-4 text-rose-400 group-hover:scale-110 transition"></i> Safety
-                            </span>
+                            <span class="font-bold text-sm flex items-center gap-1.5"><i data-lucide="shield-alert" class="w-4 h-4 text-rose-400"></i> Safety</span>
                             <span class="text-xs text-rose-200 mt-0.5">+2 Points</span>
                         </button>
                     </div>
                 </div>
-
             </div>
 
-            <!-- EXPANDING LIVE MATCH LOG / TIMELINE -->
+            <!-- Live Event Feed -->
             <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-6 shadow-xl space-y-4">
                 <div class="flex items-center justify-between border-b border-slate-700 pb-3">
                     <div class="flex items-center gap-3">
-                        <div class="p-2 bg-pitch-500/10 text-pitch-400 rounded-lg">
-                            <i data-lucide="list-ordered" class="w-5 h-5"></i>
-                        </div>
+                        <div class="p-2 bg-pitch-500/10 text-pitch-400 rounded-lg"><i data-lucide="list-ordered" class="w-5 h-5"></i></div>
                         <div>
                             <h3 class="font-bold text-lg text-white">Live Event Feed</h3>
                             <p class="text-xs text-slate-400">Expands dynamically with every scoring event recorded</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span id="event-count-badge" class="bg-pitch-500/20 text-pitch-400 border border-pitch-500/30 text-xs px-2.5 py-1 rounded-full font-semibold">0 Events</span>
-                    </div>
+                    <span id="event-count-badge" class="bg-pitch-500/20 text-pitch-400 border border-pitch-500/30 text-xs px-2.5 py-1 rounded-full font-semibold">0 Events</span>
                 </div>
-
-                <!-- Container that grows smoothly with entries -->
                 <div id="match-log-container" class="log-transition overflow-hidden">
                     <div id="match-log-list" class="space-y-3">
-                        <!-- Empty State default -->
                         <div id="empty-log-state" class="text-center py-8 border-2 border-dashed border-slate-700 rounded-xl">
                             <i data-lucide="activity" class="w-10 h-10 text-slate-600 mx-auto mb-2"></i>
                             <p class="text-slate-400 text-sm font-medium">No match events recorded yet.</p>
-                            <p class="text-slate-500 text-xs mt-1">Tap scoring buttons above to log touchdowns, field goals, and safeties.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- MATCH REPORT / NOTES SECTION & EXPORT SUITE -->
+            <!-- Match Notes & Support -->
             <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-6 shadow-xl space-y-5">
                 <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-700 pb-4">
                     <div class="flex items-center gap-3">
-                        <div class="p-2 bg-pitch-500/10 text-pitch-400 rounded-lg">
-                            <i data-lucide="file-text" class="w-5 h-5"></i>
-                        </div>
+                        <div class="p-2 bg-pitch-500/10 text-pitch-400 rounded-lg"><i data-lucide="file-text" class="w-5 h-5"></i></div>
                         <div>
                             <h3 class="font-bold text-lg text-white">Match Report & Summary Notes</h3>
-                            <p class="text-xs text-slate-400">Add match highlights, referee notes, weather conditions, or player stats</p>
+                            <p class="text-xs text-slate-400">Add match highlights, referee notes, or player stats</p>
                         </div>
                     </div>
-
-                    <!-- Dynamic Filename Preview Badge -->
                     <div class="flex items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-700/80 text-xs text-slate-300">
                         <i data-lucide="file" class="w-4 h-4 text-pitch-400"></i>
-                        <span class="text-slate-400">Target File:</span>
                         <span id="filename-preview" class="font-mono font-semibold text-pitch-400">Kansas_City_V_San_Francisco_18-10-26.txt</span>
                     </div>
                 </div>
-
-                <!-- Quick Helper Buttons for Report Tags -->
-                <div class="flex flex-wrap gap-2 text-xs">
-                    <span class="text-slate-400 py-1 font-medium">Insert Template Snippets:</span>
-                    <button onclick="insertNoteTag('MVP / Player of the Match: ')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-2.5 py-1 rounded-lg transition border border-slate-600">+ MVP</button>
-                    <button onclick="insertNoteTag('Weather Conditions: ')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-2.5 py-1 rounded-lg transition border border-slate-600">+ Weather</button>
-                    <button onclick="insertNoteTag('Turnovers: ')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-2.5 py-1 rounded-lg transition border border-slate-600">+ Turnovers</button>
-                    <button onclick="insertNoteTag('\n--- Game Summary ---\n')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-2.5 py-1 rounded-lg transition border border-slate-600">+ Summary Header</button>
-                </div>
-
-                <!-- Report Textarea -->
                 <div>
-                    <textarea id="match-notes" rows="6" oninput="saveDraftNotes(this.value)" placeholder="Write your match report here... (e.g., Key scoring drives, interceptions, injuries, weather conditions)..." class="w-full bg-slate-900 border border-slate-700 focus:border-pitch-400 rounded-xl p-4 text-sm text-slate-100 placeholder-slate-500 outline-none transition leading-relaxed resize-y"></textarea>
+                    <textarea id="match-notes" rows="6" oninput="saveDraftNotes(this.value)" placeholder="Write your match report here..." class="w-full bg-slate-900 border border-slate-700 focus:border-pitch-400 rounded-xl p-4 text-sm text-slate-100 placeholder-slate-500 outline-none"></textarea>
                 </div>
-
-                <!-- EXPORT ACTIONS FOOTER -->
                 <div class="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-slate-700/80">
                     <div class="flex flex-wrap items-center gap-2">
-                        <!-- Export as Text File -->
-                        <button onclick="downloadTextReport()" class="flex items-center gap-2 px-4 py-2.5 bg-pitch-600 hover:bg-pitch-500 text-white rounded-xl font-medium text-sm transition shadow-lg shadow-pitch-600/20 active:scale-95">
-                            <i data-lucide="download" class="w-4 h-4"></i>
-                            <span>Save Match Report (.txt)</span>
+                        <button onclick="downloadTextReport()" class="flex items-center gap-2 px-4 py-2.5 bg-pitch-600 hover:bg-pitch-500 text-white rounded-xl font-medium text-sm transition">
+                            <i data-lucide="download" class="w-4 h-4"></i><span>Save Report (.txt)</span>
                         </button>
-
-                        <!-- Save to Local Storage Archive -->
-                        <button onclick="saveMatchToArchive()" class="flex items-center gap-2 px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-xl font-medium text-sm transition border border-slate-600 active:scale-95">
-                            <i data-lucide="bookmark" class="w-4 h-4 text-amber-400"></i>
-                            <span>Save to Archive</span>
-                        </button>
-                    </div>
-
-                    <div class="flex items-center gap-2">
-                        <!-- Print / PDF Report -->
-                        <button onclick="printMatchReport()" class="flex items-center gap-2 px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-medium transition border border-slate-700">
-                            <i data-lucide="printer" class="w-3.5 h-3.5"></i>
-                            <span>Print / PDF Sheet</span>
-                        </button>
-                        <!-- Export JSON -->
-                        <button onclick="downloadJsonData()" class="flex items-center gap-2 px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-medium transition border border-slate-700">
-                            <i data-lucide="code" class="w-3.5 h-3.5"></i>
-                            <span>Export Data (.json)</span>
+                        <button onclick="saveMatchToArchive()" class="flex items-center gap-2 px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-xl font-medium text-sm transition border border-slate-600">
+                            <i data-lucide="bookmark" class="w-4 h-4 text-amber-400"></i><span>Save to Archive</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Buy Me a Coffee / Support Banner -->
+                <!-- Support Banner -->
                 <div style="background: linear-gradient(135deg, #1b4332 0%, #081c15 100%); border: 2px solid #52b788; border-radius: 12px; padding: 20px; text-align: center; margin-top: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); color: #ffffff;">
-                    <div style="font-size: 1.1rem; font-weight: bold; color: #74c69d; margin-bottom: 6px;">
-                        ❤️ Enjoying the Match Tracker?
-                    </div>
-                    <p style="font-size: 0.9rem; color: #d8f3dc; margin-bottom: 15px; line-height: 1.4;">
-                        If you find this app useful for your games, consider supporting its upkeep and future updates! ☕
-                    </p>
-                    <a href="https://www.paypal.com/paypalme/brianhponeill" target="_blank" style="display: inline-block; background-color: #ffb703; color: #000000; font-weight: bold; font-size: 0.95rem; padding: 10px 20px; border-radius: 8px; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
-                        ☕ Buy me a coffee
-                    </a>
+                    <div style="font-size: 1.1rem; font-weight: bold; color: #74c69d; margin-bottom: 6px;">❤️ Enjoying the Match Tracker?</div>
+                    <p style="font-size: 0.9rem; color: #d8f3dc; margin-bottom: 15px; line-height: 1.4;">If you find this app useful for your games, consider supporting its upkeep! ☕</p>
+                    <a href="https://www.paypal.com/paypalme/brianhponeill" target="_blank" style="display: inline-block; background-color: #ffb703; color: #000000; font-weight: bold; font-size: 0.95rem; padding: 10px 20px; border-radius: 8px; text-decoration: none;">☕ Buy me a coffee</a>
                 </div>
-
             </div>
-
         </div>
 
-        <!-- ========================================== -->
-        <!-- VIEW 2: SAVED MATCHES ARCHIVE              -->
-        <!-- ========================================== -->
+        <!-- Archive View -->
         <div id="view-archive" class="hidden space-y-6">
             <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-6 shadow-xl space-y-4">
                 <div class="flex items-center justify-between border-b border-slate-700 pb-4">
-                    <div class="flex items-center gap-3">
-                        <div class="p-2 bg-amber-500/10 text-amber-400 rounded-lg">
-                            <i data-lucide="archive" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg text-white">Saved Match Archive</h3>
-                            <p class="text-xs text-slate-400">Match reports saved to your local browser storage</p>
-                        </div>
-                    </div>
-                    <button onclick="clearAllArchive()" class="text-xs text-rose-400 hover:text-rose-300 border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 rounded-lg transition">Clear All Archive</button>
+                    <h3 class="font-bold text-lg text-white">Saved Match Archive</h3>
+                    <button onclick="clearAllArchive()" class="text-xs text-rose-400 bg-rose-500/10 px-3 py-1.5 rounded-lg">Clear All Archive</button>
                 </div>
-
-                <div id="archive-list" class="space-y-4">
-                    <!-- Dynamic Archive List -->
-                </div>
+                <div id="archive-list" class="space-y-4"></div>
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- VIEW 3: MOBILE APP PROTOTYPE VIEW         -->
-        <!-- ========================================== -->
+        <!-- Mobile View Frame -->
         <div id="view-mobile" class="hidden flex justify-center py-4">
             <div class="w-full max-w-sm device-frame bg-slate-950 text-slate-100 overflow-hidden relative flex flex-col h-[780px]">
-
-                <!-- Mobile Status Bar -->
-                <div class="bg-pitch-950 px-6 pt-3 pb-1 flex justify-between items-center text-xs font-semibold text-slate-300">
+                <div class="bg-pitch-950 px-6 pt-3 pb-1 flex justify-between items-center text-xs text-slate-300">
                     <span id="mobile-clock">17:57</span>
-                    <div class="flex items-center gap-1.5">
-                        <i data-lucide="signal" class="w-3.5 h-3.5"></i>
-                        <i data-lucide="wifi" class="w-3.5 h-3.5"></i>
-                        <i data-lucide="battery" class="w-3.5 h-3.5"></i>
-                    </div>
                 </div>
-
-                <!-- Mobile Header / Game Clock -->
-                <div class="bg-pitch-900 border-b border-pitch-800 p-4 text-center relative">
-                    <div class="text-[10px] uppercase font-bold tracking-widest text-pitch-400 mb-0.5">Live NFL Match Center</div>
-                    <div class="font-mono text-xl font-extrabold text-white flex items-center justify-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                        <span id="mobile-timer-display">15:00</span>
-                    </div>
+                <div class="bg-pitch-900 border-b border-pitch-800 p-4 text-center">
+                    <div class="text-[10px] uppercase font-bold text-pitch-400">NFL Match Center</div>
+                    <div class="font-mono text-xl font-extrabold text-white" id="mobile-timer-display">15:00</div>
                 </div>
-
-                <!-- App Inner Views: Tab Pages -->
-                <div id="mobile-page-container" class="flex-1 overflow-y-auto no-scrollbar p-4 space-y-4">
-                    
-                    <!-- PAGE 1: LIVE MATCH HUB (Default) -->
-                    <div id="mobile-page-hub" class="space-y-4">
-                        <!-- Compact Score Banner -->
-                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-lg">
-                            <div class="grid grid-cols-5 items-center text-center">
-                                <div class="col-span-2">
-                                    <div id="mobile-home-name" class="font-bold text-sm text-white truncate">Kansas City</div>
-                                    <div id="mobile-home-score" class="text-4xl font-extrabold text-pitch-400 font-mono my-1">0</div>
-                                    <span class="text-[10px] text-slate-400">HOME</span>
-                                </div>
-                                <div class="col-span-1 text-xs font-bold text-slate-500">VS</div>
-                                <div class="col-span-2">
-                                    <div id="mobile-away-name" class="font-bold text-sm text-white truncate">San Francisco</div>
-                                    <div id="mobile-away-score" class="text-4xl font-extrabold text-pitch-400 font-mono my-1">0</div>
-                                    <span class="text-[10px] text-slate-400">AWAY</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Quick Scoring Trigger Bar for Mobile -->
-                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3 space-y-2">
-                            <div class="text-xs font-semibold text-slate-400 px-1">Quick Score Log</div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <button onclick="addScore('home', 6, 'Touchdown')" class="bg-pitch-700 active:bg-pitch-600 text-white p-2.5 rounded-xl text-xs font-bold flex justify-between items-center">
-                                    <span>Touchdown (Home)</span>
-                                    <span class="bg-pitch-900/60 px-1.5 py-0.5 rounded text-[10px]">+6</span>
-                                </button>
-                                <button onclick="addScore('away', 6, 'Touchdown')" class="bg-pitch-700 active:bg-pitch-600 text-white p-2.5 rounded-xl text-xs font-bold flex justify-between items-center">
-                                    <span>Touchdown (Away)</span>
-                                    <span class="bg-pitch-900/60 px-1.5 py-0.5 rounded text-[10px]">+6</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Mobile Match Feed -->
-                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3">
-                            <div class="text-xs font-bold text-white mb-3 flex items-center justify-between">
-                                <span>Match Timeline</span>
-                                <span id="mobile-event-count" class="text-[10px] text-pitch-400 bg-pitch-950 px-2 py-0.5 rounded-full border border-pitch-800">0 Events</span>
-                            </div>
-                            <div id="mobile-timeline-feed" class="space-y-2">
-                                <p class="text-xs text-slate-500 text-center py-6">Events will log here in real-time</p>
-                            </div>
+                <div class="flex-1 overflow-y-auto no-scrollbar p-4 space-y-4">
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 text-center">
+                        <div class="grid grid-cols-5 items-center">
+                            <div class="col-span-2"><div id="mobile-home-name" class="font-bold text-sm text-white truncate">Kansas City</div><div id="mobile-home-score" class="text-4xl font-extrabold text-pitch-400 font-mono">0</div></div>
+                            <div class="col-span-1 text-xs font-bold text-slate-500">VS</div>
+                            <div class="col-span-2"><div id="mobile-away-name" class="font-bold text-sm text-white truncate">San Francisco</div><div id="mobile-away-score" class="text-4xl font-extrabold text-pitch-400 font-mono">0</div></div>
                         </div>
                     </div>
-
-                    <!-- PAGE 2: MOBILE NOTES PREVIEW -->
-                    <div id="mobile-page-notes" class="hidden space-y-4">
-                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
-                            <h4 class="font-bold text-sm text-white flex items-center gap-2">
-                                <i data-lucide="edit-3" class="w-4 h-4 text-pitch-400"></i>
-                                <span>Match Notes</span>
-                            </h4>
-                            <textarea id="mobile-notes-area" rows="8" oninput="saveDraftNotes(this.value)" placeholder="Type match highlights here..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white outline-none focus:border-pitch-400"></textarea>
-                            <button onclick="downloadTextReport()" class="w-full py-2.5 bg-pitch-600 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2">
-                                <i data-lucide="download" class="w-4 h-4"></i>
-                                <span>Save Report</span>
-                            </button>
-                        </div>
-                    </div>
-
                 </div>
-
-                <!-- React Native Style Bottom Navigation Bar -->
-                <div class="bg-slate-900 border-t border-slate-800 px-6 py-2 flex justify-around items-center text-xs">
-                    <button onclick="switchMobileTab('hub')" id="nav-hub" class="flex flex-col items-center gap-1 text-pitch-400 font-medium">
-                        <i data-lucide="shield" class="w-5 h-5"></i>
-                        <span class="text-[10px]">Match</span>
-                    </button>
-                    <button onclick="switchMobileTab('notes')" id="nav-notes" class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-300 font-medium">
-                        <i data-lucide="file-text" class="w-5 h-5"></i>
-                        <span class="text-[10px]">Report</span>
-                    </button>
+                <div class="bg-slate-900 border-t border-slate-800 px-6 py-2 flex justify-around text-xs">
+                    <button onclick="switchMobileTab('hub')" class="text-pitch-400">Match</button>
+                    <button onclick="switchMobileTab('notes')" class="text-slate-500">Report</button>
                 </div>
-
-                <!-- iOS Home Indicator bar -->
-                <div class="bg-slate-900 pb-1 flex justify-center">
-                    <div class="w-28 h-1 bg-slate-700 rounded-full"></div>
-                </div>
-
             </div>
         </div>
-
     </main>
 
-    <!-- JavaScript Application Logic -->
     <script>
-        // Initializing default match state with NFL teams
         let matchState = {
-            homeName: 'Kansas City',
-            awayName: 'San Francisco',
-            homeScore: 0,
-            awayScore: 0,
-            homeTD: 0,
-            awayTD: 0,
-            homeFG: 0,
-            awayFG: 0,
-            homeSafety: 0,
-            awaySafety: 0,
-            matchDate: getFormattedDateDDMMYY(new Date()),
-            rawDateString: new Date().toISOString().split('T')[0],
-            notes: '',
-            events: [],
-            timerSeconds: 0,
-            timerRunning: false,
-            timerInterval: null
+            homeName: 'Kansas City', awayName: 'San Francisco',
+            homeScore: 0, awayScore: 0,
+            homeTD: 0, awayTD: 0, homeConversionsUsed: 0, awayConversionsUsed: 0,
+            homeFG: 0, awayFG: 0, homeSafety: 0, awaySafety: 0,
+            matchDate: getFormattedDateDDMMYY(new Date()), rawDateString: new Date().toISOString().split('T')[0],
+            notes: '', events: [], timerSeconds: 0, timerRunning: false, timerInterval: null
         };
 
-        // On Load Initialization
         window.addEventListener('DOMContentLoaded', () => {
-            const dateInput = document.getElementById('match-date-input');
-            if (dateInput) {
-                dateInput.value = matchState.rawDateString;
-            }
-
+            document.getElementById('match-date-input').value = matchState.rawDateString;
             lucide.createIcons();
             updateFilenamePreview();
             renderArchiveList();
-            updateMobileClock();
-            setInterval(updateMobileClock, 30000);
         });
 
         function getFormattedDateDDMMYY(dateObj) {
-            const day = String(dateObj.getDate()).padStart(2, '0');
-            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-            const year = String(dateObj.getFullYear()).slice(-2);
-            return `${day}-${month}-${year}`;
+            return `${String(dateObj.getDate()).padStart(2, '0')}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getFullYear()).slice(-2)}`;
         }
 
         function updateMatchDate(val) {
             if (!val) return;
             matchState.rawDateString = val;
             const parts = val.split('-');
-            if (parts.length === 3) {
-                const year = parts[0].slice(-2);
-                const month = parts[1];
-                const day = parts[2];
-                matchState.matchDate = `${day}-${month}-${year}`;
-            }
+            if (parts.length === 3) matchState.matchDate = `${parts[2]}-${parts[1]}-${parts[0].slice(-2)}`;
             updateFilenamePreview();
         }
 
-        function generateFilename(extension = 'txt') {
-            const cleanHome = matchState.homeName.trim().replace(/\s+/g, '_') || 'Home';
-            const cleanAway = matchState.awayName.trim().replace(/\s+/g, '_') || 'Away';
-            return `${cleanHome}_V_${cleanAway}_${matchState.matchDate}.${extension}`;
+        function generateFilename(ext = 'txt') {
+            return `${matchState.homeName.trim().replace(/\s+/g, '_')}_V_${matchState.awayName.trim().replace(/\s+/g, '_')}_${matchState.matchDate}.${ext}`;
         }
 
         function updateFilenamePreview() {
-            const previewEl = document.getElementById('filename-preview');
-            if (previewEl) {
-                previewEl.innerText = generateFilename('txt');
-            }
+            document.getElementById('filename-preview').innerText = generateFilename('txt');
         }
 
         function syncTeamNames(team, val) {
@@ -648,437 +380,167 @@
             updateFilenamePreview();
         }
 
-        // Add Scoring Event
+        // Strict validation rule enforcement for NFL conversion/extra points
         function addScore(team, points, type) {
             const teamName = team === 'home' ? matchState.homeName : matchState.awayName;
-            
+
+            if (type === 'Extra Point' || type === '2-Pt Conversion') {
+                const tds = team === 'home' ? matchState.homeTD : matchState.awayTD;
+                const used = team === 'home' ? matchState.homeConversionsUsed : matchState.awayConversionsUsed;
+                if (tds <= used) {
+                    alert(`Cannot add ${type}: All recorded Touchdowns for ${teamName} already have conversions or extra points recorded! (Log a Touchdown first).`);
+                    return;
+                }
+                if (team === 'home') matchState.homeConversionsUsed++;
+                else matchState.awayConversionsUsed++;
+            }
+
             if (team === 'home') {
                 matchState.homeScore += points;
-                if (type === 'Touchdown' || type === '2-Pt Conversion') matchState.homeTD++;
+                if (type === 'Touchdown') matchState.homeTD++;
                 else if (type === 'Field Goal') matchState.homeFG++;
                 else if (type === 'Safety') matchState.homeSafety++;
             } else {
                 matchState.awayScore += points;
-                if (type === 'Touchdown' || type === '2-Pt Conversion') matchState.awayTD++;
+                if (type === 'Touchdown') matchState.awayTD++;
                 else if (type === 'Field Goal') matchState.awayFG++;
                 else if (type === 'Safety') matchState.awaySafety++;
             }
 
-            const eventEntry = {
-                id: Date.now(),
-                team: team,
-                teamName: teamName,
-                type: type,
-                points: points,
+            matchState.events.push({
+                id: Date.now(), team, teamName, type, points,
                 matchTime: formatTimer(matchState.timerSeconds),
-                homeRunning: matchState.homeScore,
-                awayRunning: matchState.awayScore,
+                homeRunning: matchState.homeScore, awayRunning: matchState.awayScore,
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            };
-
-            matchState.events.push(eventEntry);
+            });
             renderUI();
         }
 
-        // Undo Last Scoring Event
         function undoLastScore() {
             if (matchState.events.length === 0) return;
-
             const lastEvent = matchState.events.pop();
-            
+
             if (lastEvent.team === 'home') {
                 matchState.homeScore -= lastEvent.points;
-                if (lastEvent.type === 'Touchdown' || lastEvent.type === '2-Pt Conversion') matchState.homeTD--;
-                else if (lastEvent.type === 'Field Goal') matchState.homeFG--;
+                if (lastEvent.type === 'Touchdown') {
+                    matchState.homeTD--;
+                    if (matchState.homeConversionsUsed > matchState.homeTD) matchState.homeConversionsUsed = matchState.homeTD;
+                } else if (lastEvent.type === 'Extra Point' || lastEvent.type === '2-Pt Conversion') {
+                    matchState.homeConversionsUsed--;
+                } else if (lastEvent.type === 'Field Goal') matchState.homeFG--;
                 else if (lastEvent.type === 'Safety') matchState.homeSafety--;
             } else {
                 matchState.awayScore -= lastEvent.points;
-                if (lastEvent.type === 'Touchdown' || lastEvent.type === '2-Pt Conversion') matchState.awayTD--;
-                else if (lastEvent.type === 'Field Goal') matchState.awayFG--;
+                if (lastEvent.type === 'Touchdown') {
+                    matchState.awayTD--;
+                    if (matchState.awayConversionsUsed > matchState.awayTD) matchState.awayConversionsUsed = matchState.awayTD;
+                } else if (lastEvent.type === 'Extra Point' || lastEvent.type === '2-Pt Conversion') {
+                    matchState.awayConversionsUsed--;
+                } else if (lastEvent.type === 'Field Goal') matchState.awayFG--;
                 else if (lastEvent.type === 'Safety') matchState.awaySafety--;
             }
-
             renderUI();
         }
 
         function confirmReset() {
-            if (confirm("Are you sure you want to reset the match score and events?")) {
-                matchState.homeScore = 0;
-                matchState.awayScore = 0;
-                matchState.homeTD = 0;
-                matchState.awayTD = 0;
-                matchState.homeFG = 0;
-                matchState.awayFG = 0;
-                matchState.homeSafety = 0;
-                matchState.awaySafety = 0;
+            if (confirm("Reset match score and events?")) {
+                matchState.homeScore = matchState.awayScore = matchState.homeTD = matchState.awayTD = matchState.homeConversionsUsed = matchState.awayConversionsUsed = matchState.homeFG = matchState.awayFG = matchState.homeSafety = matchState.awaySafety = 0;
                 matchState.events = [];
                 matchState.notes = '';
                 document.getElementById('match-notes').value = '';
-                document.getElementById('mobile-notes-area').value = '';
-                resetTimer();
                 renderUI();
             }
         }
 
-        function saveDraftNotes(val) {
-            matchState.notes = val;
-            document.getElementById('match-notes').value = val;
-            document.getElementById('mobile-notes-area').value = val;
-        }
-
-        function insertNoteTag(tag) {
-            const textarea = document.getElementById('match-notes');
-            const current = textarea.value;
-            const updated = current ? `${current}\n${tag}` : tag;
-            saveDraftNotes(updated);
-        }
-
+        function saveDraftNotes(val) { matchState.notes = val; }
+        
+        let timerInterval = null;
         function toggleTimer() {
             if (matchState.timerRunning) {
                 clearInterval(matchState.timerInterval);
                 matchState.timerRunning = false;
             } else {
                 matchState.timerRunning = true;
-                matchState.timerInterval = setInterval(() => {
-                    matchState.timerSeconds++;
-                    updateTimerDisplay();
-                }, 1000);
-            }
-            updateTimerButtons();
-        }
-
-        function resetTimer() {
-            clearInterval(matchState.timerInterval);
-            matchState.timerRunning = false;
-            matchState.timerSeconds = 0;
-            updateTimerDisplay();
-            updateTimerButtons();
-        }
-
-        function updateTimerDisplay() {
-            const formatted = formatTimer(matchState.timerSeconds);
-            document.getElementById('web-timer-display').innerText = formatted;
-            document.getElementById('mobile-timer-display').innerText = formatted;
-            
-            const halfIndicator = document.getElementById('half-indicator');
-            if (matchState.timerSeconds > 2700) {
-                halfIndicator.innerText = "4th Quarter / OT";
-            } else if (matchState.timerSeconds > 1800) {
-                halfIndicator.innerText = "3rd Quarter";
-            } else if (matchState.timerSeconds > 900) {
-                halfIndicator.innerText = "2nd Quarter (HT)";
-            } else {
-                halfIndicator.innerText = "1st Quarter";
+                matchState.timerInterval = setInterval(() => { matchState.timerSeconds++; updateTimerDisplay(); }, 1000);
             }
         }
-
-        function updateTimerButtons() {
-            const btn = document.getElementById('timer-toggle-btn');
-            const icon = document.getElementById('timer-icon');
-            if (matchState.timerRunning) {
-                btn.className = "p-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition active:scale-95";
-                icon.setAttribute('data-lucide', 'pause');
-            } else {
-                btn.className = "p-2 bg-pitch-600 hover:bg-pitch-500 text-white rounded-lg transition active:scale-95";
-                icon.setAttribute('data-lucide', 'play');
-            }
-            lucide.createIcons();
-        }
-
-        function formatTimer(totalSecs) {
-            const mins = Math.floor(totalSecs / 60);
-            const secs = totalSecs % 60;
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
+        function resetTimer() { clearInterval(matchState.timerInterval); matchState.timerRunning = false; matchState.timerSeconds = 0; updateTimerDisplay(); }
+        function updateTimerDisplay() { document.getElementById('web-timer-display').innerText = formatTimer(matchState.timerSeconds); }
+        function formatTimer(sec) { return `${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`; }
 
         function renderUI() {
             document.getElementById('web-home-score').innerText = matchState.homeScore;
             document.getElementById('web-away-score').innerText = matchState.awayScore;
+            document.getElementById('mobile-home-score').innerText = matchState.homeScore;
+            document.getElementById('mobile-away-score').innerText = matchState.awayScore;
+            
             document.getElementById('web-home-td').innerText = `TDs: ${matchState.homeTD}`;
             document.getElementById('web-home-fg').innerText = `FGs: ${matchState.homeFG}`;
             document.getElementById('web-home-safety').innerText = `Safeties: ${matchState.homeSafety}`;
-            
             document.getElementById('web-away-td').innerText = `TDs: ${matchState.awayTD}`;
             document.getElementById('web-away-fg').innerText = `FGs: ${matchState.awayFG}`;
             document.getElementById('web-away-safety').innerText = `Safeties: ${matchState.awaySafety}`;
 
-            document.getElementById('mobile-home-score').innerText = matchState.homeScore;
-            document.getElementById('mobile-away-score').innerText = matchState.awayScore;
-
-            renderMatchTimeline();
-            updateFilenamePreview();
-        }
-
-        function renderMatchTimeline() {
-            const logList = document.getElementById('match-log-list');
-            const mobileFeed = document.getElementById('mobile-timeline-feed');
             const badge = document.getElementById('event-count-badge');
-            const mobileBadge = document.getElementById('mobile-event-count');
-
             badge.innerText = `${matchState.events.length} Events`;
-            mobileBadge.innerText = `${matchState.events.length} Events`;
-
+            
+            const logList = document.getElementById('match-log-list');
             if (matchState.events.length === 0) {
-                logList.innerHTML = `
-                    <div id="empty-log-state" class="text-center py-8 border-2 border-dashed border-slate-700 rounded-xl">
-                        <i data-lucide="activity" class="w-10 h-10 text-slate-600 mx-auto mb-2"></i>
-                        <p class="text-slate-400 text-sm font-medium">No match events recorded yet.</p>
-                        <p class="text-slate-500 text-xs mt-1">Tap scoring buttons above to log touchdowns, field goals, and safeties.</p>
-                    </div>
-                `;
-                mobileFeed.innerHTML = `<p class="text-xs text-slate-500 text-center py-6">Events will log here in real-time</p>`;
-                lucide.createIcons();
+                logList.innerHTML = `<div class="text-center py-8 border-2 border-dashed border-slate-700 rounded-xl"><p class="text-slate-400 text-sm">No match events recorded yet.</p></div>`;
                 return;
             }
-
-            const reversedEvents = [...matchState.events].reverse();
-
-            logList.innerHTML = reversedEvents.map(evt => {
-                const isHome = evt.team === 'home';
-                const iconName = evt.type === 'Touchdown' ? 'award' : (evt.type === 'Field Goal' ? 'zap' : 'target');
-                const badgeBg = isHome ? 'bg-pitch-500/20 text-pitch-400 border-pitch-500/30' : 'bg-slate-700 text-slate-300 border-slate-600';
-
-                return `
-                    <div class="bg-slate-900/90 border border-slate-700/80 rounded-xl p-3.5 flex items-center justify-between shadow transition hover:border-slate-600">
-                        <div class="flex items-center gap-3">
-                            <div class="p-2.5 rounded-lg ${isHome ? 'bg-pitch-600/20 text-pitch-400' : 'bg-slate-800 text-slate-300'}">
-                                <i data-lucide="${iconName}" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <span class="font-bold text-sm text-white">${evt.teamName}</span>
-                                    <span class="text-xs px-2 py-0.5 rounded-full border ${badgeBg} font-semibold">${evt.type} (+${evt.points})</span>
-                                </div>
-                                <div class="text-xs text-slate-400 mt-0.5 flex items-center gap-2">
-                                    <span>Clock: <strong class="text-slate-300">${evt.matchTime}</strong></span>
-                                    <span>•</span>
-                                    <span>Recorded at ${evt.timestamp}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="font-mono font-extrabold text-base text-pitch-400 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
-                            ${evt.homeRunning} - ${evt.awayRunning}
-                        </div>
+            logList.innerHTML = [...matchState.events].reverse().map(evt => `
+                <div class="bg-slate-900 border border-slate-700 rounded-xl p-3.5 flex items-center justify-between shadow">
+                    <div>
+                        <span class="font-bold text-sm text-white">${evt.teamName}</span> - <span class="text-xs text-pitch-400">${evt.type} (+${evt.points})</span>
+                        <div class="text-xs text-slate-400">Clock: ${evt.matchTime}</div>
                     </div>
-                `;
-            }).join('');
-
-            mobileFeed.innerHTML = reversedEvents.map(evt => {
-                return `
-                    <div class="bg-slate-800/80 p-2.5 rounded-xl flex items-center justify-between text-xs border border-slate-700/50">
-                        <div class="flex items-center gap-2">
-                            <span class="font-bold text-white">${evt.teamName}</span>
-                            <span class="text-[10px] text-pitch-400 font-semibold">${evt.type}</span>
-                        </div>
-                        <div class="font-mono font-bold text-pitch-400">${evt.homeRunning} - ${evt.awayRunning}</div>
-                    </div>
-                `;
-            }).join('');
-
+                    <div class="font-mono font-bold text-pitch-400">${evt.homeRunning} - ${evt.awayRunning}</div>
+                </div>
+            `).join('');
             lucide.createIcons();
         }
 
         function downloadTextReport() {
-            const filename = generateFilename('txt');
-            let content = `=====================================================\n`;
-            content += `NFL MATCH REPORT\n`;
-            content += `=====================================================\n`;
-            content += `Match: ${matchState.homeName} VS ${matchState.awayName}\n`;
-            content += `Date:  ${matchState.matchDate}\n`;
-            content += `Final Score: ${matchState.homeName} ${matchState.homeScore} - ${matchState.awayScore} ${matchState.awayName}\n`;
-            content += `Match Duration Logged: ${formatTimer(matchState.timerSeconds)}\n`;
-            content += `=====================================================\n\n`;
-
-            content += `SCORING BREAKDOWN:\n`;
-            content += `* ${matchState.homeName}: ${matchState.homeTD} TDs, ${matchState.homeFG} FGs, ${matchState.homeSafety} Safeties\n`;
-            content += `* ${matchState.awayName}: ${matchState.awayTD} TDs, ${matchState.awayFG} FGs, ${matchState.awaySafety} Safeties\n\n`;
-
-            content += `CHRONOLOGICAL MATCH TIMELINE:\n`;
-            if (matchState.events.length === 0) {
-                content += `(No scoring events logged)\n`;
-            } else {
-                matchState.events.forEach((evt) => {
-                    content += `[${evt.matchTime}] ${evt.teamName} - ${evt.type} (+${evt.points} pts) | Score: ${evt.homeRunning}-${evt.awayRunning}\n`;
-                });
-            }
-
-            content += `\n=====================================================\n`;
-            content += `MATCH REPORT & SUMMARY NOTES:\n`;
-            content += `=====================================================\n`;
-            content += matchState.notes ? matchState.notes : `(No report notes written)\n`;
-
-            triggerFileDownload(filename, content, 'text/plain');
-        }
-
-        function downloadJsonData() {
-            const filename = generateFilename('json');
-            const content = JSON.stringify(matchState, null, 2);
-            triggerFileDownload(filename, content, 'application/json');
-        }
-
-        function triggerFileDownload(filename, text, type) {
-            const element = document.createElement('a');
-            const file = new Blob([text], {type: type});
-            element.href = URL.createObjectURL(file);
-            element.download = filename;
-            document.body.appendChild(element);
-            element.click();
-            document.body.removeChild(element);
+            const text = `NFL MATCH REPORT\nMatch: ${matchState.homeName} vs ${matchState.awayName}\nDate: ${matchState.matchDate}\nFinal Score: ${matchState.homeScore} - ${matchState.awayScore}\n\nNotes:\n${matchState.notes}`;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = generateFilename('txt'); a.click();
         }
 
         function saveMatchToArchive() {
-            const archiveKey = 'nfl_match_archive';
-            let archive = JSON.parse(localStorage.getItem(archiveKey) || '[]');
-            
-            const matchRecord = {
-                id: generateFilename('raw'),
-                filename: generateFilename('txt'),
-                savedAt: new Date().toLocaleString(),
-                data: JSON.parse(JSON.stringify(matchState))
-            };
-
-            archive.unshift(matchRecord);
-            localStorage.setItem(archiveKey, JSON.stringify(archive));
+            let archive = JSON.parse(localStorage.getItem('nfl_match_archive') || '[]');
+            archive.unshift({ filename: generateFilename('txt'), savedAt: new Date().toLocaleString(), data: JSON.parse(JSON.stringify(matchState)) });
+            localStorage.setItem('nfl_match_archive', JSON.stringify(archive));
+            alert("Match saved to archive!");
             renderArchiveList();
-            alert(`Match successfully saved to archive as:\n${matchRecord.filename}`);
         }
 
         function renderArchiveList() {
             const container = document.getElementById('archive-list');
-            const archiveKey = 'nfl_match_archive';
-            const archive = JSON.parse(localStorage.getItem(archiveKey) || '[]');
-
             if (!container) return;
-
-            if (archive.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-10 border-2 border-dashed border-slate-700 rounded-xl">
-                        <i data-lucide="archive" class="w-10 h-10 text-slate-600 mx-auto mb-2"></i>
-                        <p class="text-slate-400 text-sm font-medium">Your match archive is empty.</p>
-                        <p class="text-slate-500 text-xs mt-1">Tap "Save to Archive" on any match to store it locally.</p>
-                    </div>
-                `;
-                lucide.createIcons();
-                return;
-            }
-
-            container.innerHTML = archive.map((item, index) => {
-                const d = item.data;
-                return `
-                    <div class="bg-slate-900 border border-slate-700 rounded-xl p-4 flex flex-wrap items-center justify-between gap-4">
-                        <div>
-                            <div class="font-bold text-white text-base flex items-center gap-2">
-                                <span>${d.homeName} ${d.homeScore} - ${d.awayScore} ${d.awayName}</span>
-                                <span class="text-xs bg-pitch-500/20 text-pitch-400 px-2 py-0.5 rounded-full border border-pitch-500/30">${d.matchDate}</span>
-                            </div>
-                            <div class="text-xs text-slate-400 mt-1 flex items-center gap-3">
-                                <span>Saved: ${item.savedAt}</span>
-                                <span>•</span>
-                                <span>Events: ${d.events.length}</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <button onclick="loadArchiveMatch(${index})" class="px-3 py-1.5 bg-pitch-600 hover:bg-pitch-500 text-white rounded-lg text-xs font-semibold transition">
-                                Load Match
-                            </button>
-                            <button onclick="deleteArchiveMatch(${index})" class="p-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded-lg text-xs transition">
-                                <i data-lucide="trash-2" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            lucide.createIcons();
-        }
-
-        function loadArchiveMatch(index) {
-            const archive = JSON.parse(localStorage.getItem('nfl_match_archive') || '[]');
-            if (archive[index]) {
-                if (confirm("Load this match into the active scoreboard? Current unsaved work will be overwritten.")) {
-                    matchState = archive[index].data;
-                    document.getElementById('web-home-name').value = matchState.homeName;
-                    document.getElementById('web-away-name').value = matchState.awayName;
-                    document.getElementById('match-notes').value = matchState.notes || '';
-                    document.getElementById('mobile-notes-area').value = matchState.notes || '';
-                    renderUI();
-                    switchView('web');
-                }
-            }
-        }
-
-        function deleteArchiveMatch(index) {
             let archive = JSON.parse(localStorage.getItem('nfl_match_archive') || '[]');
-            archive.splice(index, 1);
-            localStorage.setItem('nfl_match_archive', JSON.stringify(archive));
-            renderArchiveList();
+            if (archive.length === 0) { container.innerHTML = `<p class="text-slate-400 text-sm">Archive is empty.</p>`; return; }
+            container.innerHTML = archive.map((item, idx) => `
+                <div class="bg-slate-900 p-4 rounded-xl flex justify-between items-center border border-slate-700">
+                    <div><span class="font-bold text-white">${item.filename}</span><div class="text-xs text-slate-400">Saved: ${item.savedAt}</div></div>
+                    <button onclick="loadArchiveMatch(${idx})" class="px-3 py-1.5 bg-pitch-600 text-white rounded-lg text-xs">Load</button>
+                </div>
+            `).join('');
         }
 
-        function clearAllArchive() {
-            if (confirm("Are you sure you want to delete all saved match reports?")) {
-                localStorage.removeItem('nfl_match_archive');
-                renderArchiveList();
-            }
+        function loadArchiveMatch(idx) {
+            let archive = JSON.parse(localStorage.getItem('nfl_match_archive') || '[]');
+            if (archive[idx]) { matchState = archive[idx].data; renderUI(); switchView('web'); }
         }
 
-        function printMatchReport() {
-            window.print();
+        function clearAllArchive() { localStorage.removeItem('nfl_match_archive'); renderArchiveList(); }
+        function switchView(v) {
+            document.getElementById('view-web').classList.toggle('hidden', v !== 'web');
+            document.getElementById('view-archive').classList.toggle('hidden', v !== 'archive');
+            document.getElementById('view-mobile').classList.toggle('hidden', v !== 'mobile');
+            if(v === 'archive') renderArchiveList();
         }
-
-        function switchView(view) {
-            const webTab = document.getElementById('tab-web');
-            const archiveTab = document.getElementById('tab-archive');
-            const mobileTab = document.getElementById('tab-mobile');
-            
-            const webView = document.getElementById('view-web');
-            const archiveView = document.getElementById('view-archive');
-            const mobileView = document.getElementById('view-mobile');
-
-            webTab.className = "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white transition-all";
-            archiveTab.className = "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white transition-all";
-            mobileTab.className = "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white transition-all";
-
-            webView.classList.add('hidden');
-            archiveView.classList.add('hidden');
-            mobileView.classList.add('hidden');
-
-            if (view === 'web') {
-                webTab.className = "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all bg-pitch-600 text-white shadow";
-                webView.classList.remove('hidden');
-            } else if (view === 'archive') {
-                archiveTab.className = "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all bg-pitch-600 text-white shadow";
-                archiveView.classList.remove('hidden');
-                renderArchiveList();
-            } else {
-                mobileTab.className = "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all bg-pitch-600 text-white shadow";
-                mobileView.classList.remove('hidden');
-            }
-        }
-
-        function switchMobileTab(tab) {
-            const pageHub = document.getElementById('mobile-page-hub');
-            const pageNotes = document.getElementById('mobile-page-notes');
-            const navHub = document.getElementById('nav-hub');
-            const navNotes = document.getElementById('nav-notes');
-
-            if (tab === 'hub') {
-                pageHub.classList.remove('hidden');
-                pageNotes.classList.add('hidden');
-                navHub.className = "flex flex-col items-center gap-1 text-pitch-400 font-medium";
-                navNotes.className = "flex flex-col items-center gap-1 text-slate-500 hover:text-slate-300 font-medium";
-            } else {
-                pageHub.classList.add('hidden');
-                pageNotes.classList.remove('hidden');
-                navNotes.className = "flex flex-col items-center gap-1 text-pitch-400 font-medium";
-                navHub.className = "flex flex-col items-center gap-1 text-slate-500 hover:text-slate-300 font-medium";
-            }
-        }
-
-        function updateMobileClock() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-            document.getElementById('mobile-clock').innerText = timeStr;
-        }
+        function switchMobileTab(t) {}
     </script>
 </body>
 </html>
