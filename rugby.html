@@ -136,6 +136,9 @@
                             <button id="timer-toggle-btn" onclick="toggleTimer()" class="p-2 bg-pitch-600 hover:bg-pitch-500 text-white rounded-lg transition active:scale-95" title="Start/Pause Clock">
                                 <i id="timer-icon" data-lucide="play" class="w-4 h-4"></i>
                             </button>
+                            <button onclick="advancePeriod()" class="px-2.5 py-2 bg-slate-700 hover:bg-slate-600 text-amber-400 font-semibold text-xs rounded-lg transition active:scale-95 border border-slate-600" title="End Current Period / Advance Match">
+                                End Period
+                            </button>
                             <button onclick="resetTimer()" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg transition active:scale-95" title="Reset Clock">
                                 <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
                             </button>
@@ -188,7 +191,7 @@
                     <div class="md:col-span-1 text-center py-2">
                         <div class="inline-flex flex-col items-center justify-center">
                             <span class="text-xs font-semibold text-pitch-400 tracking-widest uppercase bg-pitch-950/80 border border-pitch-700/60 px-3 py-1 rounded-full">VS</span>
-                            <span class="text-xs text-slate-400 mt-2 font-mono" id="half-indicator">1st Half</span>
+                            <span class="text-xs text-amber-400 font-bold mt-2 font-mono uppercase" id="half-indicator">1st Half</span>
                         </div>
                     </div>
 
@@ -342,7 +345,7 @@
                     <div class="flex items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-700/80 text-xs text-slate-300">
                         <i data-lucide="file" class="w-4 h-4 text-pitch-400"></i>
                         <span class="text-slate-400">Target File:</span>
-                        <span id="filename-preview" class="font-mono font-semibold text-pitch-400">Home_V_Galway_Bay_18-10-26.txt</span>
+                        <span id="filename-preview" class="font-mono font-semibold text-pitch-400">Home_V_Away_18-10-26.md</span>
                     </div>
                 </div>
 
@@ -366,7 +369,7 @@
                         <!-- Export as Text File -->
                         <button onclick="downloadTextReport()" class="flex items-center gap-2 px-4 py-2.5 bg-pitch-600 hover:bg-pitch-500 text-white rounded-xl font-medium text-sm transition shadow-lg shadow-pitch-600/20 active:scale-95">
                             <i data-lucide="download" class="w-4 h-4"></i>
-                            <span>Save Match Report (.markdown)</span>
+                            <span>Save Match Report (.md)</span>
                         </button>
 
                         <!-- Save to Local Storage Archive -->
@@ -559,6 +562,7 @@
             awayConversionsUsed: 0,
             homeKicks: 0,
             awayKicks: 0,
+            currentPeriod: '1st Half',
             matchDate: getFormattedDateDDMMYY(new Date()),
             rawDateString: new Date().toISOString().split('T')[0],
             notes: '',
@@ -601,7 +605,7 @@
             updateFilenamePreview();
         }
 
-        function generateFilename(extension = 'txt') {
+        function generateFilename(extension = 'md') {
             const cleanHome = matchState.homeName.trim().replace(/\s+/g, '_') || 'Home';
             const cleanAway = matchState.awayName.trim().replace(/\s+/g, '_') || 'Away';
             return `${cleanHome}_V_${cleanAway}_${matchState.matchDate}.${extension}`;
@@ -610,7 +614,7 @@
         function updateFilenamePreview() {
             const previewEl = document.getElementById('filename-preview');
             if (previewEl) {
-                previewEl.innerText = generateFilename('txt');
+                previewEl.innerText = generateFilename('md');
             }
         }
 
@@ -657,10 +661,12 @@
 
             const eventEntry = {
                 id: Date.now(),
+                isSystemMessage: false,
                 team: team,
                 teamName: teamName,
                 type: type,
                 points: points,
+                period: matchState.currentPeriod,
                 matchTime: formatTimer(matchState.timerSeconds),
                 homeRunning: matchState.homeScore,
                 awayRunning: matchState.awayScore,
@@ -676,22 +682,24 @@
 
             const lastEvent = matchState.events.pop();
             
-            if (lastEvent.team === 'home') {
-                matchState.homeScore -= lastEvent.points;
-                if (lastEvent.type === 'Try') {
-                    matchState.homeTries--;
-                    if (matchState.homeConversionsUsed > matchState.homeTries) matchState.homeConversionsUsed = matchState.homeTries;
+            if (!lastEvent.isSystemMessage) {
+                if (lastEvent.team === 'home') {
+                    matchState.homeScore -= lastEvent.points;
+                    if (lastEvent.type === 'Try') {
+                        matchState.homeTries--;
+                        if (matchState.homeConversionsUsed > matchState.homeTries) matchState.homeConversionsUsed = matchState.homeTries;
+                    }
+                    else if (lastEvent.type === 'Conversion') matchState.homeConversionsUsed--;
+                    else matchState.homeKicks--;
+                } else {
+                    matchState.awayScore -= lastEvent.points;
+                    if (lastEvent.type === 'Try') {
+                        matchState.awayTries--;
+                        if (matchState.awayConversionsUsed > matchState.awayTries) matchState.awayConversionsUsed = matchState.awayTries;
+                    }
+                    else if (lastEvent.type === 'Conversion') matchState.awayConversionsUsed--;
+                    else matchState.awayKicks--;
                 }
-                else if (lastEvent.type === 'Conversion') matchState.homeConversionsUsed--;
-                else matchState.homeKicks--;
-            } else {
-                matchState.awayScore -= lastEvent.points;
-                if (lastEvent.type === 'Try') {
-                    matchState.awayTries--;
-                    if (matchState.awayConversionsUsed > matchState.awayTries) matchState.awayConversionsUsed = matchState.awayTries;
-                }
-                else if (lastEvent.type === 'Conversion') matchState.awayConversionsUsed--;
-                else matchState.awayKicks--;
             }
 
             renderUI();
@@ -707,6 +715,7 @@
                 matchState.awayConversionsUsed = 0;
                 matchState.homeKicks = 0;
                 matchState.awayKicks = 0;
+                matchState.currentPeriod = '1st Half';
                 matchState.events = [];
                 matchState.notes = '';
                 document.getElementById('match-notes').value = '';
@@ -734,6 +743,10 @@
                 clearInterval(matchState.timerInterval);
                 matchState.timerRunning = false;
             } else {
+                // If transitioning from Half-Time, advance to 2nd Half
+                if (matchState.currentPeriod === 'Half-Time') {
+                    matchState.currentPeriod = '2nd Half';
+                }
                 matchState.timerRunning = true;
                 matchState.timerInterval = setInterval(() => {
                     matchState.timerSeconds++;
@@ -741,27 +754,56 @@
                 }, 1000);
             }
             updateTimerButtons();
+            renderUI();
+        }
+
+        function advancePeriod() {
+            // Pause clock
+            if (matchState.timerRunning) {
+                clearInterval(matchState.timerInterval);
+                matchState.timerRunning = false;
+                updateTimerButtons();
+            }
+
+            let periodText = "";
+            if (matchState.currentPeriod === '1st Half') {
+                matchState.currentPeriod = 'Half-Time';
+                periodText = "--- END OF 1ST HALF (HALF-TIME) ---";
+            } else if (matchState.currentPeriod === '2nd Half') {
+                matchState.currentPeriod = 'Full-Time';
+                periodText = "--- END OF 2ND HALF (FULL-TIME) ---";
+            } else {
+                periodText = `--- END OF PERIOD (${matchState.currentPeriod}) ---`;
+            }
+
+            // Log event in timeline
+            matchState.events.push({
+                id: Date.now(),
+                isSystemMessage: true,
+                message: periodText,
+                matchTime: formatTimer(matchState.timerSeconds),
+                homeRunning: matchState.homeScore,
+                awayRunning: matchState.awayScore,
+                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            });
+
+            renderUI();
         }
 
         function resetTimer() {
             clearInterval(matchState.timerInterval);
             matchState.timerRunning = false;
             matchState.timerSeconds = 0;
+            matchState.currentPeriod = '1st Half';
             updateTimerDisplay();
             updateTimerButtons();
+            renderUI();
         }
 
         function updateTimerDisplay() {
             const formatted = formatTimer(matchState.timerSeconds);
             document.getElementById('web-timer-display').innerText = formatted;
             document.getElementById('mobile-timer-display').innerText = formatted;
-            
-            const halfIndicator = document.getElementById('half-indicator');
-            if (matchState.timerSeconds > 2400) {
-                halfIndicator.innerText = "2nd Half";
-            } else {
-                halfIndicator.innerText = "1st Half";
-            }
         }
 
         function updateTimerButtons() {
@@ -789,10 +831,12 @@
             document.getElementById('web-home-tries').innerText = `Tries: ${matchState.homeTries}`;
             document.getElementById('web-home-kicks').innerText = `Kicks: ${matchState.homeKicks}`;
             document.getElementById('web-away-tries').innerText = `Tries: ${matchState.awayTries}`;
-            document.getElementById('web-away-kicks').innerText = `Kicks: ${matchState.homeKicks}`;
+            document.getElementById('web-away-kicks').innerText = `Kicks: ${matchState.awayKicks}`;
 
             document.getElementById('mobile-home-score').innerText = matchState.homeScore;
             document.getElementById('mobile-away-score').innerText = matchState.awayScore;
+
+            document.getElementById('half-indicator').innerText = matchState.currentPeriod;
 
             renderMatchTimeline();
             updateFilenamePreview();
@@ -823,6 +867,14 @@
             const reversedEvents = [...matchState.events].reverse();
 
             logList.innerHTML = reversedEvents.map(evt => {
+                if (evt.isSystemMessage) {
+                    return `
+                        <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-2.5 text-center shadow">
+                            <span class="font-bold text-xs text-amber-400 font-mono tracking-wider">${evt.message} [${evt.matchTime}]</span>
+                        </div>
+                    `;
+                }
+
                 const isHome = evt.team === 'home';
                 const iconName = evt.type === 'Try' ? 'award' : (evt.type === 'Conversion' ? 'footprints' : 'target');
                 const badgeBg = isHome ? 'bg-pitch-500/20 text-pitch-400 border-pitch-500/30' : 'bg-slate-700 text-slate-300 border-slate-600';
@@ -839,7 +891,7 @@
                                     <span class="text-xs px-2 py-0.5 rounded-full border ${badgeBg} font-semibold">${evt.type} (+${evt.points})</span>
                                 </div>
                                 <div class="text-xs text-slate-400 mt-0.5 flex items-center gap-2">
-                                    <span>Match Clock: <strong class="text-slate-300">${evt.matchTime}</strong></span>
+                                    <span>Match Clock: <strong class="text-slate-300">${evt.matchTime} (${evt.period})</strong></span>
                                     <span>•</span>
                                     <span>Recorded at ${evt.timestamp}</span>
                                 </div>
@@ -853,6 +905,13 @@
             }).join('');
 
             mobileFeed.innerHTML = reversedEvents.map(evt => {
+                if (evt.isSystemMessage) {
+                    return `
+                        <div class="bg-amber-500/10 border border-amber-500/30 p-2 rounded-xl text-center text-[10px] font-bold text-amber-400">
+                            ${evt.message}
+                        </div>
+                    `;
+                }
                 return `
                     <div class="bg-slate-800/80 p-2.5 rounded-xl flex items-center justify-between text-xs border border-slate-700/50">
                         <div class="flex items-center gap-2">
@@ -868,7 +927,7 @@
         }
 
         function downloadTextReport() {
-            const filename = generateFilename('txt');
+            const filename = generateFilename('md');
             let content = `=====================================================\n`;
             content += `# RUGBY UNION MATCH REPORT\n`;
             content += `=====================================================\n`;
@@ -887,7 +946,11 @@
                 content += `(No scoring events logged)\n`;
             } else {
                 matchState.events.forEach((evt) => {
-                    content += `[${evt.matchTime}] ${evt.teamName} - ${evt.type} (+${evt.points} pts) | Score: ${evt.homeRunning}-${evt.awayRunning}\n`;
+                    if (evt.isSystemMessage) {
+                        content += `\n${evt.message} [${evt.matchTime}]\n\n`;
+                    } else {
+                        content += `[${evt.matchTime} - ${evt.period}] ${evt.teamName} - ${evt.type} (+${evt.points} pts) | Score: ${evt.homeRunning}-${evt.awayRunning}\n`;
+                    }
                 });
             }
 
@@ -921,7 +984,7 @@
             
             const matchRecord = {
                 id: generateFilename('raw'),
-                filename: generateFilename('txt'),
+                filename: generateFilename('md'),
                 savedAt: new Date().toLocaleString(),
                 data: JSON.parse(JSON.stringify(matchState))
             };
