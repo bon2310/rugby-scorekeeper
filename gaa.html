@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -105,7 +105,7 @@
               Match Hub
               <span
                 class="bg-pitch-500/20 text-pitch-400 text-xs px-2 py-0.5 rounded-full border border-pitch-500/30"
-                >Under 17's</span
+                >Up For The Match!</span
               >
             </h1>
             <p class="text-xs text-slate-400">
@@ -182,6 +182,13 @@
                   <i id="timer-icon" data-lucide="play" class="w-4 h-4"></i>
                 </button>
                 <button
+                  onclick="advancePeriod()"
+                  class="px-2.5 py-2 bg-slate-700 hover:bg-slate-600 text-amber-400 font-semibold text-xs rounded-lg transition active:scale-95 border border-slate-600"
+                  title="End Current Period / Advance Match"
+                >
+                  End Period
+                </button>
+                <button
                   onclick="resetTimer()"
                   class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg transition active:scale-95"
                   title="Reset Clock"
@@ -245,12 +252,12 @@
               <div class="mb-2">
                 <label
                   class="block text-[10px] text-slate-400 font-semibold uppercase tracking-wider mb-1"
-                  >Home Team</label
+                  >Home</label
                 >
                 <input
                   type="text"
                   id="web-home-name"
-                  value="Home Team"
+                  value="Home"
                   oninput="syncTeamNames('home', this.value)"
                   class="w-full bg-slate-800/80 border border-slate-600 focus:border-pitch-400 rounded-lg text-center font-bold text-lg text-white py-1.5 px-2 outline-none transition"
                 />
@@ -287,7 +294,7 @@
                   >VS</span
                 >
                 <span
-                  class="text-xs text-slate-400 mt-2 font-mono"
+                  class="text-xs text-amber-400 font-bold mt-2 font-mono uppercase"
                   id="half-indicator"
                   >1st Half</span
                 >
@@ -301,12 +308,12 @@
               <div class="mb-2">
                 <label
                   class="block text-[10px] text-slate-400 font-semibold uppercase tracking-wider mb-1"
-                  >Away Team</label
+                  >Away</label
                 >
                 <input
                   type="text"
                   id="web-away-name"
-                  value="Away Team"
+                  value="Away"
                   oninput="syncTeamNames('away', this.value)"
                   class="w-full bg-slate-800/80 border border-slate-600 focus:border-pitch-400 rounded-lg text-center font-bold text-lg text-white py-1.5 px-2 outline-none transition"
                 />
@@ -351,7 +358,7 @@
                 class="font-bold text-pitch-400 flex items-center gap-2"
               >
                 <i data-lucide="shield" class="w-5 h-5"></i>
-                <span>Home Team Controls</span>
+                <span>Home Controls</span>
               </h2>
               <span
                 class="text-xs bg-pitch-500/10 text-pitch-400 border border-pitch-500/20 px-2 py-0.5 rounded-full font-medium"
@@ -416,7 +423,7 @@
                 class="font-bold text-pitch-400 flex items-center gap-2"
               >
                 <i data-lucide="shield" class="w-5 h-5"></i>
-                <span>Away Team Controls</span>
+                <span>Away Controls</span>
               </h2>
               <span
                 class="text-xs bg-slate-700 text-slate-300 border border-slate-600 px-2 py-0.5 rounded-full font-medium"
@@ -552,7 +559,7 @@
               <span
                 id="filename-preview"
                 class="font-mono font-semibold text-pitch-400"
-                >Claremorris_V_Galway_Bay_18-10-26.txt</span
+                >Home_V_Away_18-10-26.md</span
               >
             </div>
           </div>
@@ -604,13 +611,13 @@
             class="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-slate-700/80"
           >
             <div class="flex flex-wrap items-center gap-2">
-              <!-- Export as Text File -->
+              <!-- Export as Markdown File -->
               <button
                 onclick="downloadTextReport()"
                 class="flex items-center gap-2 px-4 py-2.5 bg-pitch-600 hover:bg-pitch-500 text-white rounded-xl font-medium text-sm transition shadow-lg shadow-pitch-600/20 active:scale-95"
               >
                 <i data-lucide="download" class="w-4 h-4"></i>
-                <span>Save Match Report (.txt)</span>
+                <span>Save Match Report (.md)</span>
               </button>
 
               <!-- Save to Local Storage Archive -->
@@ -791,7 +798,7 @@
                       id="mobile-home-name"
                       class="font-bold text-sm text-white truncate"
                     >
-                      Home Team
+                      Home
                     </div>
                     <div
                       id="mobile-home-score"
@@ -815,7 +822,7 @@
                       id="mobile-away-name"
                       class="font-bold text-sm text-white truncate"
                     >
-                      Away Team
+                      Away
                     </div>
                     <div
                       id="mobile-away-score"
@@ -948,8 +955,8 @@
     <script>
       // Initializing default match state
       let matchState = {
-        homeName: "Home Team",
-        awayName: "Away Team",
+        homeName: "Home",
+        awayName: "Away",
         homeScore: 0,
         awayScore: 0,
         homeGoals: 0,
@@ -958,6 +965,7 @@
         away2Points: 0,
         homePoints: 0,
         awayPoints: 0,
+        currentPeriod: "1st Half",
         matchDate: getFormattedDateDDMMYY(new Date()),
         rawDateString: new Date().toISOString().split("T")[0],
         notes: "",
@@ -1002,7 +1010,7 @@
         updateFilenamePreview();
       }
 
-      function generateFilename(extension = "txt") {
+      function generateFilename(extension = "md") {
         const cleanHome =
           matchState.homeName.trim().replace(/\s+/g, "_") || "Home";
         const cleanAway =
@@ -1013,7 +1021,7 @@
       function updateFilenamePreview() {
         const previewEl = document.getElementById("filename-preview");
         if (previewEl) {
-          previewEl.innerText = generateFilename("txt");
+          previewEl.innerText = generateFilename("md");
         }
       }
 
@@ -1056,10 +1064,12 @@
 
         const eventEntry = {
           id: Date.now(),
+          isSystemMessage: false,
           team: team,
           teamName: teamName,
           type: type,
           points: points,
+          period: matchState.currentPeriod,
           matchTime: formatTimer(matchState.timerSeconds),
           homeRunning: getScoreString("home"),
           awayRunning: getScoreString("away"),
@@ -1079,16 +1089,18 @@
 
         const lastEvent = matchState.events.pop();
 
-        if (lastEvent.team === "home") {
-          matchState.homeScore -= lastEvent.points;
-          if (lastEvent.type === "Goal") matchState.homeGoals--;
-          else if (lastEvent.type === "2 Pointer") matchState.home2Points--;
-          else matchState.homePoints--;
-        } else {
-          matchState.awayScore -= lastEvent.points;
-          if (lastEvent.type === "Goal") matchState.awayGoals--;
-          else if (lastEvent.type === "2 Pointer") matchState.away2Points--;
-          else matchState.awayPoints--;
+        if (!lastEvent.isSystemMessage) {
+          if (lastEvent.team === "home") {
+            matchState.homeScore -= lastEvent.points;
+            if (lastEvent.type === "Goal") matchState.homeGoals--;
+            else if (lastEvent.type === "2 Pointer") matchState.home2Points--;
+            else matchState.homePoints--;
+          } else {
+            matchState.awayScore -= lastEvent.points;
+            if (lastEvent.type === "Goal") matchState.awayGoals--;
+            else if (lastEvent.type === "2 Pointer") matchState.away2Points--;
+            else matchState.awayPoints--;
+          }
         }
 
         renderUI();
@@ -1106,6 +1118,7 @@
           matchState.away2Points = 0;
           matchState.homePoints = 0;
           matchState.awayPoints = 0;
+          matchState.currentPeriod = "1st Half";
           matchState.events = [];
           matchState.notes = "";
           document.getElementById("match-notes").value = "";
@@ -1133,6 +1146,10 @@
           clearInterval(matchState.timerInterval);
           matchState.timerRunning = false;
         } else {
+          // If transitioning from Half-Time, advance to 2nd Half automatically
+          if (matchState.currentPeriod === "Half-Time") {
+            matchState.currentPeriod = "2nd Half";
+          }
           matchState.timerRunning = true;
           matchState.timerInterval = setInterval(() => {
             matchState.timerSeconds++;
@@ -1140,27 +1157,57 @@
           }, 1000);
         }
         updateTimerButtons();
+        renderUI();
+      }
+
+      function advancePeriod() {
+        if (matchState.timerRunning) {
+          clearInterval(matchState.timerInterval);
+          matchState.timerRunning = false;
+          updateTimerButtons();
+        }
+
+        let periodText = "";
+        if (matchState.currentPeriod === "1st Half") {
+          matchState.currentPeriod = "Half-Time";
+          periodText = "--- END OF 1ST HALF (HALF-TIME) ---";
+        } else if (matchState.currentPeriod === "2nd Half") {
+          matchState.currentPeriod = "Full-Time";
+          periodText = "--- END OF 2ND HALF (FULL-TIME) ---";
+        } else {
+          periodText = `--- END OF PERIOD (${matchState.currentPeriod}) ---`;
+        }
+
+        matchState.events.push({
+          id: Date.now(),
+          isSystemMessage: true,
+          message: periodText,
+          matchTime: formatTimer(matchState.timerSeconds),
+          homeRunning: getScoreString("home"),
+          awayRunning: getScoreString("away"),
+          timestamp: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        });
+
+        renderUI();
       }
 
       function resetTimer() {
         clearInterval(matchState.timerInterval);
         matchState.timerRunning = false;
         matchState.timerSeconds = 0;
+        matchState.currentPeriod = "1st Half";
         updateTimerDisplay();
         updateTimerButtons();
+        renderUI();
       }
 
       function updateTimerDisplay() {
         const formatted = formatTimer(matchState.timerSeconds);
         document.getElementById("web-timer-display").innerText = formatted;
         document.getElementById("mobile-timer-display").innerText = formatted;
-
-        const halfIndicator = document.getElementById("half-indicator");
-        if (matchState.timerSeconds > 2400) {
-          halfIndicator.innerText = "2nd Half";
-        } else {
-          halfIndicator.innerText = "1st Half";
-        }
       }
 
       function updateTimerButtons() {
@@ -1185,7 +1232,6 @@
       }
 
       // Helper to compute GAA Goals : Points format (Goals : 2-pointers + 1-pointers)
-      // Note: In GAA scoreboards, Goals are separated from total points over the bar.
       function getGAAFormat(team) {
         const goals =
           team === "home" ? matchState.homeGoals : matchState.awayGoals;
@@ -1247,6 +1293,9 @@
         document.getElementById("mobile-away-total").innerText =
           matchState.awayScore;
 
+        document.getElementById("half-indicator").innerText =
+          matchState.currentPeriod;
+
         renderMatchTimeline();
         updateFilenamePreview();
       }
@@ -1278,6 +1327,14 @@
 
         logList.innerHTML = reversedEvents
           .map((evt) => {
+            if (evt.isSystemMessage) {
+              return `
+                        <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-2.5 text-center shadow">
+                            <span class="font-bold text-xs text-amber-400 font-mono tracking-wider">${evt.message} [${evt.matchTime}]</span>
+                        </div>
+                    `;
+            }
+
             const isHome = evt.team === "home";
             const iconName =
               evt.type === "Goal"
@@ -1301,7 +1358,7 @@
                                     <span class="text-xs px-2 py-0.5 rounded-full border ${badgeBg} font-semibold">${evt.type} (+${evt.points})</span>
                                 </div>
                                 <div class="text-xs text-slate-400 mt-0.5 flex items-center gap-2">
-                                    <span>Match Clock: <strong class="text-slate-300">${evt.matchTime}</strong></span>
+                                    <span>Match Clock: <strong class="text-slate-300">${evt.matchTime} (${evt.period})</strong></span>
                                     <span>•</span>
                                     <span>Recorded at ${evt.timestamp}</span>
                                 </div>
@@ -1317,6 +1374,13 @@
 
         mobileFeed.innerHTML = reversedEvents
           .map((evt) => {
+            if (evt.isSystemMessage) {
+              return `
+                        <div class="bg-amber-500/10 border border-amber-500/30 p-2 rounded-xl text-center text-[10px] font-bold text-amber-400">
+                            ${evt.message}
+                        </div>
+                    `;
+            }
             return `
                     <div class="bg-slate-800/80 p-2.5 rounded-xl flex items-center justify-between text-xs border border-slate-700/50">
                         <div class="flex items-center gap-2">
@@ -1332,39 +1396,38 @@
         lucide.createIcons();
       }
 
-      // EXPORT FEATURE 1: Download Text File (.txt)
+      // EXPORT FEATURE: Download Markdown Report (.md)
       function downloadTextReport() {
-        const filename = generateFilename("txt");
-        let content = `=====================================================\n`;
-        content += `GAA MATCH REPORT\n`;
-        content += `=====================================================\n`;
-        content += `Match: ${matchState.homeName} VS ${matchState.awayName}\n`;
-        content += `Date:  ${matchState.matchDate}\n`;
-        content += `Final Score: ${matchState.homeName} ${getScoreString("home")} - ${getScoreString("away")} ${matchState.awayName}\n`;
-        content += `Match Duration Logged: ${formatTimer(matchState.timerSeconds)}\n`;
-        content += `=====================================================\n\n`;
+        const filename = generateFilename("md");
+        let content = `# GAA MATCH REPORT\n\n`;
+        content += `## Match: ${matchState.homeName} VS ${matchState.awayName}\n`;
+        content += `## Date: ${matchState.matchDate}\n`;
+        content += `## Final Score: ${matchState.homeName} ${getScoreString("home")} - ${getScoreString("away")} ${matchState.awayName}\n`;
+        content += `## Match Duration Logged: ${formatTimer(matchState.timerSeconds)}\n\n`;
 
-        content += `SCORING BREAKDOWN:\n`;
-        content += `* ${matchState.homeName}: ${matchState.homeGoals} Goals, ${matchState.home2Points} 2 Pointers, ${matchState.homePoints} Points (Total: ${matchState.homeScore})\n`;
-        content += `* ${matchState.awayName}: ${matchState.awayGoals} Goals, ${matchState.away2Points} 2 Pointers, ${matchState.awayPoints} Points (Total: ${matchState.awayScore})\n\n`;
+        content += `### SCORING BREAKDOWN:\n`;
+        content += `* **${matchState.homeName}**: ${matchState.homeGoals} Goals, ${matchState.home2Points} 2 Pointers, ${matchState.homePoints} Points (Total: ${matchState.homeScore})\n`;
+        content += `* **${matchState.awayName}**: ${matchState.awayGoals} Goals, ${matchState.away2Points} 2 Pointers, ${matchState.awayPoints} Points (Total: ${matchState.awayScore})\n\n`;
 
-        content += `CHRONOLOGICAL MATCH TIMELINE:\n`;
+        content += `### CHRONOLOGICAL MATCH TIMELINE:\n`;
         if (matchState.events.length === 0) {
           content += `(No scoring events logged)\n`;
         } else {
-          matchState.events.forEach((evt, idx) => {
-            content += `[${evt.matchTime}] ${evt.teamName} - ${evt.type} (+${evt.points} pts) | Score: ${evt.homeRunning} vs ${evt.awayRunning}\n`;
+          matchState.events.forEach((evt) => {
+            if (evt.isSystemMessage) {
+              content += `\n**${evt.message}** *[${evt.matchTime}]*\n\n`;
+            } else {
+              content += `- [${evt.matchTime} - ${evt.period}] **${evt.teamName}** - ${evt.type} (+${evt.points} pts) | Score: ${evt.homeRunning} vs ${evt.awayRunning}\n`;
+            }
           });
         }
 
-        content += `\n=====================================================\n`;
-        content += `MATCH REPORT & SUMMARY NOTES:\n`;
-        content += `=====================================================\n`;
+        content += `\n### MATCH REPORT & SUMMARY NOTES:\n`;
         content += matchState.notes
           ? matchState.notes
-          : `(No report notes written)\n`;
+          : `*(No report notes written)*\n`;
 
-        triggerFileDownload(filename, content, "text/plain");
+        triggerFileDownload(filename, content, "text/markdown");
       }
 
       function downloadJsonData() {
@@ -1389,7 +1452,7 @@
 
         const matchRecord = {
           id: generateFilename("raw"),
-          filename: generateFilename("txt"),
+          filename: generateFilename("md"),
           savedAt: new Date().toLocaleString(),
           data: JSON.parse(JSON.stringify(matchState)),
         };
