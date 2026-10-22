@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galway Bay U17's Live Scorekeeper & Match Reporter</title>
+    <title>Rugby Union Live Scorekeeper & Match Reporter</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -90,7 +90,7 @@
                 </div>
                 <div>
                     <h1 class="font-bold text-lg leading-tight text-white flex items-center gap-2">
-                        Match Hub <span class="bg-pitch-500/20 text-pitch-400 text-xs px-2 py-0.5 rounded-full border border-pitch-500/30">Under 17's</span>
+                        Match Hub <span class="bg-pitch-500/20 text-pitch-400 text-xs px-2 py-0.5 rounded-full border border-pitch-500/30">Game Day!</span>
                     </h1>
                     <p class="text-xs text-slate-400">Score Tracker, Match Report & Export Suite</p>
                 </div>
@@ -366,7 +366,7 @@
                         <!-- Export as Text File -->
                         <button onclick="downloadTextReport()" class="flex items-center gap-2 px-4 py-2.5 bg-pitch-600 hover:bg-pitch-500 text-white rounded-xl font-medium text-sm transition shadow-lg shadow-pitch-600/20 active:scale-95">
                             <i data-lucide="download" class="w-4 h-4"></i>
-                            <span>Save Match Report (.txt)</span>
+                            <span>Save Match Report (.markdown)</span>
                         </button>
 
                         <!-- Save to Local Storage Archive -->
@@ -870,19 +870,19 @@
         function downloadTextReport() {
             const filename = generateFilename('txt');
             let content = `=====================================================\n`;
-            content += `RUGBY UNION MATCH REPORT\n`;
+            content += `# RUGBY UNION MATCH REPORT\n`;
             content += `=====================================================\n`;
-            content += `Match: ${matchState.homeName} VS ${matchState.awayName}\n`;
-            content += `Date:  ${matchState.matchDate}\n`;
-            content += `Final Score: ${matchState.homeName} ${matchState.homeScore} - ${matchState.awayScore} ${matchState.awayName}\n`;
-            content += `Match Duration Logged: ${formatTimer(matchState.timerSeconds)}\n`;
+            content += `## Match: ${matchState.homeName} VS ${matchState.awayName}\n`;
+            content += `## Date:  ${matchState.matchDate}\n`;
+            content += `## Final Score: ${matchState.homeName} ${matchState.homeScore} - ${matchState.awayScore} ${matchState.awayName}\n`;
+            content += `## Match Duration Logged: ${formatTimer(matchState.timerSeconds)}\n`;
             content += `=====================================================\n\n`;
 
             content += `SCORING BREAKDOWN:\n`;
-            content += `* ${matchState.homeName}: ${matchState.homeTries} Tries, ${matchState.homeKicks} Successful Kicks\n`;
-            content += `* ${matchState.awayName}: ${matchState.awayTries} Tries, ${matchState.awayKicks} Successful Kicks\n\n`;
+            content += `### * ${matchState.homeName}: ${matchState.homeTries} Tries, ${matchState.homeKicks} Successful Kicks\n`;
+            content += `### * ${matchState.awayName}: ${matchState.awayTries} Tries, ${matchState.awayKicks} Successful Kicks\n\n`;
 
-            content += `CHRONOLOGICAL MATCH TIMELINE:\n`;
+            content += `# CHRONOLOGICAL MATCH TIMELINE:\n`;
             if (matchState.events.length === 0) {
                 content += `(No scoring events logged)\n`;
             } else {
@@ -892,11 +892,11 @@
             }
 
             content += `\n=====================================================\n`;
-            content += `MATCH REPORT & SUMMARY NOTES:\n`;
+            content += `# MATCH REPORT & SUMMARY NOTES:\n`;
             content += `=====================================================\n`;
             content += matchState.notes ? matchState.notes : `(No report notes written)\n`;
 
-            triggerFileDownload(filename, content, 'text/plain');
+            triggerFileDownload(filename, content, 'text/markdown');
         }
 
         function downloadJsonData() {
